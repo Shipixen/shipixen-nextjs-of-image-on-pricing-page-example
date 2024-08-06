@@ -4,9 +4,80 @@
 #### Example of image on pricing page
 See how to use the pricing page component to add an image
 
+[Live Demo](https://example-of-image-on-pricing-page.vercel.app/pricing)
+
+## How to add an image to the pricing plans
+
+1. Update the `PricingTier` interface
+
+```tsx
+export interface PricingTier {
+  name: string;
+  id: string;
+  href: string;
+  discountPrice: string | Record<string, string>;
+  price: string | Record<string, string>;
+  description: string | React.ReactNode;
+  features: string[];
+  featured?: boolean;
+  highlighted?: boolean;
+  cta: string;
+  soldOut?: boolean;
+  image?: React.ReactNode;
+}
+```
+
+2. Add the image to each of the items in the `pricingTiers` array
+
+```tsx
+export const pricingTiers: PricingTier[] = [
+  {
+    name: 'Free',
+    id: '0',
+    href: '/subscribe',
+    price: { '1': '$0', '2': '$0' },
+    discountPrice: { '1': '', '2': '' },
+    description: `Get all goodies for free, no credit card required.`,
+    features: [
+      `Multi-platform compatibility`,
+      `Real-time notification system`,
+      `Advanced user permissions`,
+    ],
+    featured: false,
+    highlighted: false,
+    soldOut: false,
+    cta: `Sign up`,
+    image: <img src="/static/images/backdrop-1.webp" alt="Free" />,
+  },
+  // ...
+  // do the same for the other items if any
+];
+```
+
+3. Add the image to the pricing page `app/pricing/page.tsx`
+
+```tsx
+// ...find where the description is rendered and add {image} under it (or anywhere you want the image to be displayed)
+    <p
+      className={cn(
+        tier.featured
+          ? 'text-gray-300 dark:text-gray-500'
+          : 'text-gray-600 dark:text-gray-400',
+        'mt-4 text-sm leading-6',
+      )}
+    >
+      {tier.description}
+
+      {/* Display the image here */}
+      {tier.image}
+    </p>
+// ...
+```
+
 > This website was generated with [shipixen.com](https://shipixen.com).
 > For more documentation, visit [the shipixen Docs](https://shipixen.com/boilerplate-documentation).
 
+- [How to add an image to the pricing plans](#how-to-add-an-image-to-the-pricing-plans)
 - [Installation](#installation)
 - [Development](#development)
 - [Build](#build)

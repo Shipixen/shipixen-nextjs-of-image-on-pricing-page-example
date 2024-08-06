@@ -3,11 +3,9 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 import { CheckIcon } from '@/components/icons/PricingCheckIcon';
-import { Button } from '@/components/shared/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/shared/ui/radio-group';
 import { Label } from '@/components/shared/ui/label';
-import Header from '@/components/shared/Header';
-
+import { Button } from '@/components/shared/ui/button';
 import {
   pricingFrequencies as frequencies,
   pricingTiers as tiers,
@@ -16,25 +14,21 @@ import {
 export default function PricingPage() {
   const [frequency, setFrequency] = useState(frequencies[0]);
 
-  const tier = tiers[0];
   const bannerText = '';
 
   return (
     <div className="flex flex-col w-full items-center fancy-overlay">
-      <Header />
-
-      <div className="w-full flex flex-col items-center mb-24">
-        <div className="mx-auto max-w-7xl px-6 xl:px-8">
-          <div className="mx-auto max-w-2xl sm:text-center">
+      <div className="w-full flex flex-col items-center">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center">
+          <div className="w-full lg:w-auto mx-auto max-w-4xl lg:text-center">
             <h1 className="text-4xl font-semibold leading-tight md:leading-tight max-w-xs sm:max-w-none md:text-6xl fancy-heading">
               Pricing
             </h1>
-            <p className="mt-6 md:text-xl"></p>
           </div>
 
           {bannerText ? (
-            <div className="flex justify-center my-4">
-              <p className="px-4 py-3 text-xs bg-primary-100 text-black dark:bg-primary-300/30 dark:text-white/80 rounded-xl">
+            <div className="w-full lg:w-auto flex justify-center my-4">
+              <p className="w-full px-4 py-3 text-xs bg-primary-100 text-black dark:bg-primary-300/30 dark:text-white/80 rounded-xl">
                 {bannerText}
               </p>
             </div>
@@ -52,7 +46,7 @@ export default function PricingPage() {
                   gridTemplateColumns: `repeat(${frequencies.length}, minmax(0, 1fr))`,
                 }}
               >
-                <p className="sr-only">Payment frequency</p>
+                <Label className="sr-only">Payment frequency</Label>
                 {frequencies.map((option) => (
                   <Label
                     className={cn(
@@ -79,76 +73,134 @@ export default function PricingPage() {
             <div className="mt-12" aria-hidden="true"></div>
           )}
 
-          <div className="flex flex-wrap xl:flex-nowrap items-center bg-white dark:bg-gray-900/80 backdrop-blur-md mx-auto mt-4 max-w-2xl rounded-3xl ring-1 ring-gray-300/70 dark:ring-gray-700 xl:mx-0 xl:flex xl:max-w-none">
-            <div className="p-8 sm:p-10 xl:flex-auto">
-              <h3 className="text-2xl font-bold tracking-tight">{tier.name}</h3>
-              <p className="mt-6 text-base leading-7 text-gray-700 dark:text-gray-400">
-                {tier.description}
-              </p>
-              <div className="mt-12 flex items-center gap-x-4">
-                <h4 className="flex-none text-sm font-semibold leading-6 text-black dark:text-white">
-                  Included features
-                </h4>
-                <div className="h-px flex-auto bg-gray-100 dark:bg-gray-700" />
-              </div>
+          <div
+            className={cn(
+              'isolate mx-auto mt-4 mb-28 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none',
+              tiers.length === 2 ? 'lg:grid-cols-2' : '',
+              tiers.length === 3 ? 'lg:grid-cols-3' : '',
+            )}
+          >
+            {tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className={cn(
+                  tier.featured
+                    ? '!bg-gray-900 ring-gray-900 dark:!bg-gray-100 dark:ring-gray-100'
+                    : 'bg-white dark:bg-gray-900/80 ring-gray-300/70 dark:ring-gray-700',
+                  'max-w-xs ring-1 rounded-3xl p-8 xl:p-10',
+                  tier.highlighted ? 'fancy-glass-contrast' : '',
+                )}
+              >
+                <h3
+                  id={tier.id}
+                  className={cn(
+                    tier.featured ? 'text-white dark:text-black' : '',
+                    'text-2xl font-bold tracking-tight',
+                  )}
+                >
+                  {tier.name}
+                </h3>
+                <p
+                  className={cn(
+                    tier.featured
+                      ? 'text-gray-300 dark:text-gray-500'
+                      : 'text-gray-600 dark:text-gray-400',
+                    'mt-4 text-sm leading-6',
+                  )}
+                >
+                  {tier.description}
 
-              <ul className="mt-10 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-700 dark:text-gray-400">
-                {tier.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-center gap-x-2 text-sm"
+                  {tier.image}
+                </p>
+                <p className="mt-6 flex items-baseline gap-x-1">
+                  <span
+                    className={cn(
+                      tier.featured ? 'text-white dark:text-black' : '',
+                      'text-4xl font-bold tracking-tight',
+                      tier.discountPrice && tier.discountPrice[frequency.value]
+                        ? 'line-through'
+                        : '',
+                    )}
                   >
-                    <CheckIcon
-                      className="h-6 w-6 flex-none text-primary-500"
-                      aria-hidden="true"
-                    />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="-mt-2 p-2 xl:pr-8 xl:mt-0 w-full xl:max-w-md xl:flex-shrink-0">
-              <div className="rounded-2xl fancy-glass fancy-glassYellow py-10 text-center ring-1 ring-inset ring-gray-300/50 dark:ring-gray-800/50 xl:flex xl:flex-col xl:justify-center xl:py-16">
-                <div className="mx-auto max-w-xs px-8">
-                  <p className="mt-6 flex items-baseline justify-center gap-x-2">
+                    {typeof tier.price === 'string'
+                      ? tier.price
+                      : tier.price[frequency.value]}
+                  </span>
+
+                  <span
+                    className={cn(
+                      tier.featured ? 'text-white dark:text-black' : '',
+                    )}
+                  >
+                    {typeof tier.discountPrice === 'string'
+                      ? tier.discountPrice
+                      : tier.discountPrice[frequency.value]}
+                  </span>
+
+                  {typeof tier.price !== 'string' ? (
                     <span
                       className={cn(
-                        'text-5xl font-bold tracking-tight',
-                        tier.discountPrice &&
-                          tier.discountPrice[frequency.value]
-                          ? 'line-through'
-                          : '',
+                        tier.featured
+                          ? 'text-gray-300 dark:text-gray-500'
+                          : 'dark:text-gray-400 text-gray-600',
+                        'text-sm font-semibold leading-6',
                       )}
                     >
-                      {typeof tier.price === 'string'
-                        ? tier.price
-                        : tier.price[frequency.value]}
-                    </span>
-
-                    <span>
-                      {typeof tier.discountPrice === 'string'
-                        ? tier.discountPrice
-                        : tier.discountPrice[frequency.value]}
-                    </span>
-
-                    <span className="text-sm font-semibold leading-6 tracking-wide text-gray-700 dark:text-gray-400">
                       {frequency.priceSuffix}
                     </span>
-                  </p>
-                  <a
-                    href="#"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex justify-center mt-8 flex-shrink-0"
+                  ) : null}
+                </p>
+                <a
+                  href={tier.href}
+                  aria-describedby={tier.id}
+                  className={cn(
+                    'flex mt-6 shadow-sm hover:opacity-80 transition-opacity',
+                    tier.soldOut ? 'pointer-events-none' : '',
+                  )}
+                >
+                  <Button
+                    size="lg"
+                    disabled={tier.soldOut}
+                    className={cn(
+                      'w-full',
+                      tier.featured || tier.soldOut ? 'grayscale' : '',
+                      !tier.highlighted && !tier.featured
+                        ? 'bg-gray-100 dark:bg-gray-600'
+                        : '',
+                    )}
+                    variant={tier.highlighted ? 'default' : 'outline'}
                   >
-                    <Button size="xl">{tier.cta}</Button>
-                  </a>
-                  <p className="mt-2 text-xs leading-5 text-gray-700 dark:text-gray-400">
-                    Sign up in seconds, no credit card required.
-                  </p>
-                </div>
+                    {tier.soldOut ? 'Sold out' : tier.cta}
+                  </Button>
+                </a>
+
+                <ul
+                  className={cn(
+                    tier.featured
+                      ? 'text-gray-300 dark:text-gray-500'
+                      : 'text-gray-700 dark:text-gray-400',
+                    'mt-8 space-y-3 text-sm leading-6 xl:mt-10',
+                  )}
+                >
+                  {tier.features.map((feature) => (
+                    <li key={feature} className="flex gap-x-3">
+                      <CheckIcon
+                        className={cn(
+                          tier.featured ? 'text-white dark:text-black' : '',
+                          tier.highlighted
+                            ? 'text-primary-500'
+                            : 'text-gray-500',
+
+                          'h-6 w-5 flex-none',
+                        )}
+                        aria-hidden="true"
+                      />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

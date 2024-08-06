@@ -17,4 +17,5 @@ export interface PricingTier {
   highlighted?: boolean;
   cta: string;
   soldOut?: boolean;
+  image?: React.ReactNode;
 }

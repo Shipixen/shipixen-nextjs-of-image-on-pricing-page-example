@@ -3,36 +3,64 @@ import {
   PricingTierFrequency,
 } from '@/data/config/pricingDataInterface';
 
+export const pricingFrequencies: PricingTierFrequency[] = [
+  { id: '1', value: '1', label: 'Monthly', priceSuffix: '/month' },
+  { id: '2', value: '2', label: 'Annually', priceSuffix: '/year' },
+];
+
 export const pricingTiers: PricingTier[] = [
   {
     name: 'Free',
-    id: 'tier-1',
+    id: '0',
     href: '/subscribe',
-    discountPrice: { '1': '', '2': '' },
     price: { '1': '$0', '2': '$0' },
-    description: 'Get all goodies for free, no credit card required.',
+    discountPrice: { '1': '', '2': '' },
+    description: `Get all goodies for free, no credit card required.`,
     features: [
-      'Multi-platform compatibility',
-      'Real-time notification system',
-      'Advanced user permissions',
+      `Multi-platform compatibility`,
+      `Real-time notification system`,
+      `Advanced user permissions`,
     ],
     featured: false,
     highlighted: false,
-    cta: 'Sign up',
-  },
-];
-
-export const pricingFrequencies: PricingTierFrequency[] = [
-  {
-    id: '19b8ddd2-7910-4f0a-b580-3cb738c5f8bc',
-    value: '1',
-    label: 'Monthly',
-    priceSuffix: '/month',
+    soldOut: false,
+    cta: `Sign up`,
+    image: <img src="/static/images/backdrop-1.webp" alt="Free" />,
   },
   {
-    id: '63f05c61-09b7-4b5e-9082-c5c824ce8711',
-    value: '2',
-    label: 'Annually',
-    priceSuffix: '/year',
+    name: 'Pro',
+    id: '1',
+    href: '/subscribe',
+    price: { '1': '$3.99', '2': '$49.99' },
+    discountPrice: { '1': '', '2': '' },
+    description: `When you grow, need more power and flexibility.`,
+    features: [
+      `All in the free plan plus`,
+      `Customizable templates`,
+      `Integration with third-party apps`,
+    ],
+    featured: false,
+    highlighted: true,
+    soldOut: false,
+    cta: `Get started`,
+    image: <img src="/static/images/backdrop-5.webp" alt="Free" />,
+  },
+  {
+    name: 'Scaler',
+    id: '2',
+    href: '/contact-us',
+    price: { '1': '$14.99', '2': '$179.88' },
+    discountPrice: { '1': '', '2': '' },
+    description: `When you grow, need more power and flexibility.`,
+    features: [
+      `All in the pro plan plus`,
+      `Priority support`,
+      `Enterprise-grade security`,
+    ],
+    featured: true,
+    highlighted: false,
+    soldOut: false,
+    cta: `Get started`,
+    image: <img src="/static/images/backdrop-3.webp" alt="Free" />,
   },
 ];
